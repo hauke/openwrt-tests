@@ -18,9 +18,9 @@ class Qemu:
     def start(self):
         target, subtarget = self.pytestconfig.getoption("target").split("/")
         qemu_cmd = (
-            f"./scripts/qemustart {target} {subtarget} -netdev user,id=wan "
+            f"./scripts/qemustart {target} {subtarget} "
             "-netdev user,id=lan,net=192.168.1.0/24,dhcpstart=192.168.1.100,restrict=yes,hostfwd=tcp::8022-:22 "
-            "-net nic,netdev=wan -net nic,netdev=lan -device virtio-rng-pci"
+            "-netdev user,id=wan -net nic,netdev=wan -net nic,netdev=lan -device virtio-rng-pci"
         )
 
         self.child = pexpect.spawn(qemu_cmd, logfile=sys.stdout.buffer)
